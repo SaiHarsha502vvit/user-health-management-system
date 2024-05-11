@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,21 +12,22 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DownhillSkiing from '@mui/icons-material/DownhillSkiing';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const darkTheme= {
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#f50057',
-    },
-  },
-};
+// const darkTheme= {
+//   palette: {
+//     mode: 'dark',
+//     primary: {
+//       main: '#1976d2',
+//     },
+//     secondary: {
+//       main: '#f50057',
+//     },
+//   },
+// };
 
 export default function SignUp() {
   const handleSubmit = (event) => {
@@ -38,6 +38,11 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
+
+  const signup=(e)=>{
+    e.preventDefault()
+    axios.get("/api/v1/singup")
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -112,7 +117,7 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
+            <Button onClick={signup}
               type="submit"
               fullWidth
               variant="contained"

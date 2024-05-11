@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {NavLink} from "react-router-dom";
+import axios from 'axios'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -28,6 +28,12 @@ export default function SignIn() {
       password: data.get('password'),
     });
   };
+
+  const loginUser=(e)=>{
+    e.preventDefault()
+    axios.post('/api/v1/singin')
+
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -72,7 +78,7 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
+            <Button onClick={loginUser}
               type="submit"
               fullWidth
               variant="contained"

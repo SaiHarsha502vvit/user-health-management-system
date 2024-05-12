@@ -8,7 +8,7 @@ import databaseConnection from './database/db.js'
 import mongoose from 'mongoose'
 
 dotenv.config({
-    path:'./env' /* we used this method inorder to load the env variables before execution of any file or code 
+    path: "./vars/.env" /* we used this method inorder to load the env variables before execution of any file or code 
                     so that env variables are available for every file */
 })
 

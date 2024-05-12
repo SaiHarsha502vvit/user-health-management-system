@@ -13,6 +13,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DownhillSkiing from '@mui/icons-material/DownhillSkiing';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import { useState } from 'react';
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -30,6 +33,14 @@ const defaultTheme = createTheme();
 // };
 
 export default function SignUp() {
+  const navigate=useNavigate()
+  const [data1,setData1]=useState({
+    firstName:'',
+    lastName:'',
+    email:'',
+    password:''
+  })
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,9 +50,36 @@ export default function SignUp() {
     });
   };
 
-  const signup=(e)=>{
+  const handleChange = ({target:{name,value}}) =>{
+    setData1(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  }
+  
+ 
+
+  const signup= async (e)=>{
     e.preventDefault()
-    axios.get("/api/v1/singup")
+    console.log(data1)
+    const {firstName,lastName,email,password}=data1
+    try {
+      const data2 = await axios.post("/api/v1/singup",{
+        firstName,lastName,email,password
+      })
+      console.log(data2)
+      console.log(data2.message)
+      if (data2.message){
+        toast.error(data2.message)
+      }
+      else{
+        setData1({})
+        toast.success('Login SuccessFull ')
+        navigate('/signin')
+      }
+    } catch (error) {
+      console.log(error.response)
+    }
   }
 
   return (
@@ -74,6 +112,7 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                   color='secondary'
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -85,6 +124,7 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                   color='secondary'
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -96,6 +136,7 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   color='secondary'
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -108,6 +149,7 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   color='secondary'
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -117,12 +159,13 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button onClick={signup}
+            <Button
               type="submit"
               fullWidth
               variant="contained"
               color='secondary'
               sx={{ mt: 3, mb: 2 }}
+              onClick={signup}
             >
               Sign Up
             </Button>

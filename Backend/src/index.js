@@ -4,10 +4,15 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { signinRoute } from './routes/signin.routes.js'
 import { singupRoute } from './routes/singup.routes.js'
+import databaseConnection from './database/db.js'
+import mongoose from 'mongoose'
+
 dotenv.config({
     path:'./env' /* we used this method inorder to load the env variables before execution of any file or code 
                     so that env variables are available for every file */
 })
+
+databaseConnection()
 
 const app=express()
 
@@ -30,8 +35,7 @@ app.use(cors({
 app.use("/api/v1/singup",singupRoute)
 app.use("/api/v1/signin",signinRoute)
 
-
-app.listen(8000,()=>{
-    console.log(`Port Listening at ${8000}`)
+app.listen(process.env.PORT,()=>{
+    console.log(`Port Listening at ${process.env.PORT}`)
 })
 

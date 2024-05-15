@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, duration, ThemeProvider } from '@mui/material/styles';
 import DownhillSkiing from '@mui/icons-material/DownhillSkiing';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -68,13 +68,13 @@ export default function SignUp() {
         firstName,lastName,email,password
       })
       console.log(data2)
-      console.log(data2.message)
-      if (data2.message){
-        toast.error(data2.message)
+      console.log(typeof(data2.data.message))
+      if (data2.data.message){
+        toast.error("Account Already Exists")
       }
       else{
         setData1({})
-        toast.success('Login SuccessFull ')
+        toast.success("Account Created Successfully")
         navigate('/signin')
       }
     } catch (error) {

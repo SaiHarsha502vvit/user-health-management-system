@@ -7,7 +7,14 @@ const signUpController = async (req, res) => {
     let lastname=req.body.lastName
     let user_email=req.body.email
     let userpassword=req.body.password
-    if (!validator.isEmail(user_email)) {
+    if ([firstname,lastname,user_email,userpassword].some(     // validation - not empty
+        (field)=> field?.trim()===""))  {
+        res.json({
+            operation: "Failed",
+            message: "User email and password are required"
+        }).status(400);
+    }
+    else if (!validator.isEmail(user_email)) {
         return res.json({
             operation: "Failed",
             message: "useremail is not valid"
@@ -33,6 +40,12 @@ const signUpController = async (req, res) => {
                 message: "User registered successfully"
             }).status(200);
         } catch (error) {
+            if (error instanceof mongoose.Error.ValidationError) {
+                return res.json({
+                    operation: "Failed",
+                    message: new ApiError(error).message
+                }).status(400);
+            }
             return res.json({
                 operation: "Failed",
                 message: error.message
